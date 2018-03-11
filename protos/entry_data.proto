@@ -1,0 +1,36 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+
+option objc_class_prefix = "ETG";
+option java_multiple_files = true;
+option java_package = "etg.data.entry";
+option java_outer_classname = "EtgProto";
+option csharp_namespace = "Etg.Data.Entry";
+
+package etg.data.entry;
+
+message GetEntryStatusRequest {
+    string entry_id = 1;
+}
+
+message GetEntryStatusResponse {
+    string entry_id = 1;
+    string status_text = 2;
+    google.protobuf.Timestamp declare_date = 3;
+}
+
+message GetYDTEntryDataRequest {
+    google.protobuf.Timestamp date_from = 1;
+}
+message GetYDTEntryDataResponse {
+    string file_name = 1;
+    bytes data = 2;
+}
+
+
+service EntryDataService {
+    rpc GetEntryStatus(stream GetEntryStatusRequest) returns (stream GetEntryStatusResponse) {}
+    rpc GetYDTEntryDataFrom(GetYDTEntryDataRequest) returns (stream GetYDTEntryDataResponse) {}
+	rpc GetYDTEntryDataAt(GetYDTEntryDataRequest) returns (GetYDTEntryDataResponse) {}
+}
